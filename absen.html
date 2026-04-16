@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Madani Bimbingan Belajar — Admin Tentor</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a7a4a;
+    --green-light: #25a466;
+    --green-pale: #e8f7ef;
+    --gold: #e6a817;
+    --gold-light: #fdf3d8;
+    --dark: #1c2b22;
+    --gray: #6b7c74;
+    --border: #c8ddd2;
+    --white: #ffffff;
+    --bg: #f4faf7;
+    --red: #d94040;
+    --blue: #2563eb;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, var(--green) 0%, #0f5230 100%);
+    color: white;
+    padding: 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 24px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .logo-circle {
+    width: 48px; height: 48px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    color: var(--dark);
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  .header-title h1 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: -0.3px;
+  }
+
+  .header-title p {
+    font-size: 12px;
+    opacity: 0.75;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+
+  /* TABS */
+  .tabs {
+    background: var(--dark);
+    display: flex;
+    max-width: 960px;
+    margin: 0 auto;
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.55);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+
+  .tab-btn:hover { color: white; }
+
+  .tab-btn.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  /* MAIN */
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* CARDS */
+  .card {
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(26,122,74,0.08);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .card-header {
+    background: linear-gradient(90deg, var(--green-pale), white);
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-icon {
+    width: 36px; height: 36px;
+    background: var(--green);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+
+  .card-header h2 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--green);
+  }
+
+  .card-body { padding: 20px; }
+
+  /* FORM */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .form-row.one { grid-template-columns: 1fr; }
+  .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  input[type="text"], input[type="date"], select, textarea {
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    color: var(--dark);
+    background: white;
+    transition: border 0.2s;
+    width: 100%;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--green-light);
+    box-shadow: 0 0 0 3px rgba(37,164,102,0.12);
+  }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  /* ABSENSI GRID */
+  .absensi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .absensi-item {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: white;
+    position: relative;
+  }
+
+  .absensi-item .pertemuan-num {
+    font-size: 11px;
+    color: var(--gray);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .absensi-item input[type="date"] {
+    font-size: 11px;
+    padding: 4px 6px;
+    border-radius: 5px;
+    margin-bottom: 6px;
+  }
+
+  .status-select {
+    font-size: 12px;
+    padding: 5px 6px;
+    border-radius: 6px;
+    font-weight: 700;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .status-H { background: #d4f5e3; color: #0d5c30; }
+  .status-A { background: #fde8e8; color: #8b1a1a; }
+  .status-S { background: #fef3c7; color: #78450a; }
+  .status-I { background: #dbeafe; color: #1e40af; }
+  .status-L { background: #f3e8ff; color: #5b21b6; }
+
+  /* BADGE */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+
+  .badge-green { background: var(--green-pale); color: var(--green); }
+  .badge-gold { background: var(--gold-light); color: #7a5a00; }
+
+  /* PERKEMBANGAN TABLE */
+  .perkembangan-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .perkembangan-table th {
+    background: var(--green);
+    color: white;
+    padding: 10px 12px;
+    text-align: left;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+  }
+
+  .perkembangan-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #eef4f0;
+    vertical-align: middle;
+  }
+
+  .perkembangan-table tr:hover td { background: var(--green-pale); }
+
+  .rating-select {
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 20px;
+    border-radius: 9px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+    letter-spacing: 0.2px;
+  }
+
+  .btn-primary {
+    background: var(--green);
+    color: white;
+    box-shadow: 0 4px 12px rgba(26,122,74,0.25);
+  }
+
+  .btn-primary:hover { background: #15623c; transform: translateY(-1px); }
+
+  .btn-gold {
+    background: var(--gold);
+    color: var(--dark);
+    box-shadow: 0 4px 12px rgba(230,168,23,0.3);
+  }
+
+  .btn-gold:hover { background: #cc9415; transform: translateY(-1px); }
+
+  .btn-outline {
+    background: white;
+    color: var(--green);
+    border: 2px solid var(--green);
+  }
+
+  .btn-outline:hover { background: var(--green-pale); }
+
+  .btn-red {
+    background: #fef2f2;
+    color: var(--red);
+    border: 1.5px solid #fca5a5;
+  }
+
+  .btn-red:hover { background: #fee2e2; }
+
+  .btn-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* SUMMARY STATS */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .stat-box {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+
+  .stat-box .num {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 26px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-box .lbl {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .stat-H .num { color: var(--green-light); }
+  .stat-A .num { color: var(--red); }
+  .stat-S .num { color: var(--gold); }
+  .stat-I .num { color: var(--blue); }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    background: var(--green-pale);
+    border-radius: 8px;
+    font-size: 12px;
+  }
+
+  .legend span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 700;
+  }
+
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* DOKUMENTASI */
+  .doc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .doc-item {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    background: #fafffe;
+  }
+
+  .doc-item label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gray);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* PRINT STYLES */
+  @media print {
+    header, .tabs, .btn-group, .no-print { display: none !important; }
+    body { background: white; }
+    .card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+    main { padding: 0; }
+    .tab-content { display: block !important; }
+  }
+
+  /* NOTIF */
+  .notif {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--green);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    z-index: 999;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s;
+  }
+
+  .notif.show { transform: translateY(0); opacity: 1; }
+
+  /* MONTH LABEL */
+  .month-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    margin-top: 16px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--green-pale);
+  }
+
+  .catatan-box {
+    background: var(--gold-light);
+    border: 1.5px solid #f0d080;
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 12px;
+  }
+
+  .catatan-box label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #7a5a00;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+    .form-row.three { grid-template-columns: 1fr 1fr; }
+    .stats-row { grid-template-columns: 2fr 2fr; }
+    .doc-grid { grid-template-columns: 1fr; }
+    .absensi-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-circle">M</div>
+    <div class="header-title">
+      <h1>Madani Bimbingan Belajar</h1>
+      <p>APLIKASI ADMINISTRASI TENTOR — OFFLINE</p>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('absensi')">📋 Absensi Kehadiran</button>
+    <button class="tab-btn" onclick="showTab('perkembangan')">📈 Perkembangan Siswa</button>
+    <button class="tab-btn" onclick="showTab('dokumentasi')">📸 Catatan Dokumentasi</button>
+    <button class="tab-btn" onclick="showTab('rekap')">📊 Rekap & Laporan</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ TAB 1: ABSENSI ============ -->
+<div id="tab-absensi" class="tab-content active">
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📋</div>
+      <div>
+        <h2>Absensi Kehadiran Tentor</h2>
+        <div class="badge badge-green" style="margin-top:4px">Sesuai Juknis Madani</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nama Tentor</label>
+          <input type="text" id="abs-tentor" placeholder="Nama lengkap tentor" oninput="autoSave()">
+        </div>
+        <div class="form-group">
+          <label>Nama Siswa</label>
+          <input type="text" id="abs-siswa" placeholder="Nama siswa" oninput="autoSave()">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Lokasi Mengajar</label>
+          <input type="text" id="abs-lokasi" placeholder="Alamat / lokasi" oninput="autoSave()">
+        </div>
+        <div class="form-group">
+          <label>Kursus / Mata Pelajaran</label>
+          <select id="abs-kursus" onchange="autoSave()">
+            <option value="">-- Pilih Kursus --</option>
+            <option>Calistung</option>
+            <option>Umum</option>
+            <option>Qur'an / Iqra'</option>
+            <option>Bahasa Inggris</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row three">
+        <div class="form-group">
+          <label>Bulan</label>
+          <select id="abs-bulan" onchange="autoSave()">
+            <option value="Januari">Januari</option><option value="Februari">Februari</option>
+            <option value="Maret">Maret</option><option value="April">April</option>
+            <option value="Mei">Mei</option><option value="Juni">Juni</option>
+            <option value="Juli">Juli</option><option value="Agustus">Agustus</option>
+            <option value="September">September</option><option value="Oktober">Oktober</option>
+            <option value="November">November</option><option value="Desember">Desember</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tahun</label>
+          <input type="text" id="abs-tahun" placeholder="2025" oninput="autoSave()">
+        </div>
+        <div class="form-group">
+          <label>Jumlah Pertemuan</label>
+          <select id="abs-jumlah" onchange="buildAbsensiGrid()">
+            <option value="8">8 Pertemuan</option>
+            <option value="12">12 Pertemuan</option>
+            <option value="16" selected>16 Pertemuan</option>
+            <option value="20">20 Pertemuan</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="section-title">Daftar Kehadiran Per Pertemuan</p>
+
+      <div class="legend">
+        <span><div class="legend-dot" style="background:#d4f5e3"></div> H = Hadir</span>
+        <span><div class="legend-dot" style="background:#fde8e8"></div> A = Tidak Hadir (tdk diganti)</span>
+        <span><div class="legend-dot" style="background:#fef3c7"></div> S = Sakit (perlu diganti)</span>
+        <span><div class="legend-dot" style="background:#dbeafe"></div> I = Izin/Sekolah (diganti)</span>
+        <span><div class="legend-dot" style="background:#f3e8ff"></div> L = Lainnya/Darurat</span>
+      </div>
+
+      <div class="stats-row" id="stats-row">
+        <div class="stat-box stat-H"><div class="num" id="stat-H">0</div><div class="lbl" style="color:var(--green-light)">Hadir</div></div>
+        <div class="stat-box stat-A"><div class="num" id="stat-A">0</div><div class="lbl" style="color:var(--red)">Tdk Hadir</div></div>
+        <div class="stat-box stat-S"><div class="num" id="stat-S">0</div><div class="lbl" style="color:var(--gold)">Sakit</div></div>
+        <div class="stat-box stat-I"><div class="num" id="stat-I">0</div><div class="lbl" style="color:var(--blue)">Izin</div></div>
+      </div>
+
+      <div class="absensi-grid" id="absensi-grid"></div>
+
+      <div class="catatan-box" style="margin-top:16px">
+        <label>📝 Catatan Kehadiran</label>
+        <textarea id="abs-catatan" placeholder="Catatan khusus kehadiran bulan ini..." oninput="autoSave()"></textarea>
+      </div>
+
+      <div class="btn-group no-print">
+        <button class="btn btn-primary" onclick="printAbsensi()">🖨️ Cetak Absensi</button>
+        <button class="btn btn-gold" onclick="saveData()">💾 Simpan Data</button>
+        <button class="btn btn-outline" onclick="resetAbsensi()">🔄 Reset Form</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TAB 2: PERKEMBANGAN ============ -->
+<div id="tab-perkembangan" class="tab-content">
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📈</div>
+      <div>
+        <h2>Catatan Perkembangan Siswa</h2>
+        <div class="badge badge-green" style="margin-top:4px">Sesuai Juknis Madani</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nama Siswa</label>
+          <input type="text" id="pkb-siswa" placeholder="Nama siswa" oninput="autoSave()">
+        </div>
+        <div class="form-group">
+          <label>Kursus</label>
+          <select id="pkb-kursus" onchange="autoSave()">
+            <option value="">-- Pilih Kursus --</option>
+            <option>Calistung</option>
+            <option>Umum</option>
+            <option>Qur'an / Iqra'</option>
+            <option>Bahasa Inggris</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Bulan/Periode</label>
+          <input type="text" id="pkb-periode" placeholder="Contoh: Januari 2025" oninput="autoSave()">
+        </div>
+        <div class="form-group">
+          <label>Gaya Belajar Siswa</label>
+          <select id="pkb-gaya" onchange="autoSave()">
+            <option value="">-- Pilih --</option>
+            <option>Visual (suka gambar/warna)</option>
+            <option>Auditori (suka mendengar)</option>
+            <option>Kinestetik (suka bergerak/praktik)</option>
+            <option>Campuran</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="section-title">Penilaian Per Aspek</p>
+
+      <table class="perkembangan-table">
+        <thead>
+          <tr>
+            <th>Aspek Penilaian</th>
+            <th>Rating</th>
+            <th>Catatan Tentor</th>
+          </tr>
+        </thead>
+        <tbody id="pkb-tbody"></tbody>
+      </table>
+
+      <p class="section-title">Catatan Khusus</p>
+      <div class="doc-grid">
+        <div class="doc-item">
+          <label>🌟 Pencapaian / Prestasi Bulan Ini</label>
+          <textarea id="pkb-prestasi" placeholder="Tuliskan pencapaian siswa..." oninput="autoSave()"></textarea>
+        </div>
+        <div class="doc-item">
+          <label>🎯 Target / Fokus Bulan Berikutnya</label>
+          <textarea id="pkb-target" placeholder="Tuliskan target belajar selanjutnya..." oninput="autoSave()"></textarea>
+        </div>
+        <div class="doc-item">
+          <label>⚠️ Kendala yang Dihadapi</label>
+          <textarea id="pkb-kendala" placeholder="Kendala dalam proses belajar..." oninput="autoSave()"></textarea>
+        </div>
+        <div class="doc-item">
+          <label>💡 Rekomendasi untuk Orang Tua</label>
+          <textarea id="pkb-rekomendasi" placeholder="Saran untuk orang tua/wali..." oninput="autoSave()"></textarea>
+        </div>
+      </div>
+
+      <div class="btn-group no-print">
+        <button class="btn btn-primary" onclick="printPerkembangan()">🖨️ Cetak Laporan</button>
+        <button class="btn btn-gold" onclick="saveData()">💾 Simpan Data</button>
+        <button class="btn btn-outline" onclick="resetPerkembangan()">🔄 Reset Form</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TAB 3: DOKUMENTASI ============ -->
+<div id="tab-dokumentasi" class="tab-content">
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📸</div>
+      <div>
+        <h2>Catatan Dokumentasi Kegiatan</h2>
+        <div class="badge badge-gold" style="margin-top:4px">Bukti Mengajar</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nama Tentor</label>
+          <input type="text" id="dok-tentor" placeholder="Nama tentor" oninput="autoSave()">
+        </div>
+        <div class="form-group">
+          <label>Nama Siswa</label>
+          <input type="text" id="dok-siswa" placeholder="Nama siswa" oninput="autoSave()">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tanggal Mengajar</label>
+          <input type="date" id="dok-tanggal" oninput="autoSave()">
+        </div>
+        <div class="form-group">
+          <label>Pertemuan Ke-</label>
+          <input type="text" id="dok-pertemuan" placeholder="Contoh: 5" oninput="autoSave()">
+        </div>
+      </div>
+
+      <p class="section-title">Struktur Pembelajaran (Opening → Isi → Closing)</p>
+
+      <div class="doc-grid">
+        <div class="doc-item">
+          <label>🌅 Opening (15 menit) — Kegiatan Pembukaan</label>
+          <textarea id="dok-opening" placeholder="Doa, ice breaking, pengulangan materi sebelumnya, dialog keseharian..." oninput="autoSave()"></textarea>
+        </div>
+        <div class="doc-item">
+          <label>📚 Isi / Pendalaman Materi (30 menit)</label>
+          <textarea id="dok-materi" placeholder="Materi yang diajarkan hari ini (sesuai buku sekolah siswa)..." oninput="autoSave()"></textarea>
+        </div>
+        <div class="doc-item">
+          <label>🎉 Closing (15 menit) — Penutup</label>
+          <textarea id="dok-closing" placeholder="Games, kuis singkat, bernyanyi materi, doa penutup..." oninput="autoSave()"></textarea>
+        </div>
+        <div class="doc-item">
+          <label>📊 Respon & Kondisi Siswa Hari Ini</label>
+          <textarea id="dok-respon" placeholder="Bagaimana semangat dan respon siswa hari ini..." oninput="autoSave()"></textarea>
+        </div>
+      </div>
+
+      <p class="section-title">Dokumentasi Foto/Video</p>
+      <div style="background:var(--green-pale);border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;color:var(--gray);">
+        <div style="font-size:32px;margin-bottom:8px;">📷</div>
+        <p style="font-weight:700;font-size:13px;">Catatan link/nama file foto atau video dokumentasi</p>
+        <textarea id="dok-foto" placeholder="Contoh: foto_pertemuan5_ahmadsiswa.jpg&#10;video_belajar_3jan.mp4&#10;&#10;Atau tulis deskripsi foto yang sudah dikirim ke WhatsApp akademik..." style="margin-top:12px;background:white;width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px;font-size:13px;" oninput="autoSave()"></textarea>
+      </div>
+
+      <div class="catatan-box" style="margin-top:12px">
+        <label>📝 Catatan Tambahan untuk Akademik</label>
+        <textarea id="dok-catatan" placeholder="Informasi penting yang perlu diketahui pihak akademik..." oninput="autoSave()"></textarea>
+      </div>
+
+      <div class="btn-group no-print">
+        <button class="btn btn-primary" onclick="printDokumentasi()">🖨️ Cetak Catatan</button>
+        <button class="btn btn-gold" onclick="saveData()">💾 Simpan Data</button>
+        <button class="btn btn-outline" onclick="resetDokumentasi()">🔄 Reset Form</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TAB 4: REKAP ============ -->
+<div id="tab-rekap" class="tab-content">
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📊</div>
+      <div>
+        <h2>Rekap Laporan & Penggajian</h2>
+        <div class="badge badge-gold" style="margin-top:4px">Untuk Diserahkan ke Akademik</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div id="rekap-preview" style="padding:16px;background:#fafffe;border:1.5px solid var(--border);border-radius:10px;font-size:13px;line-height:1.9;"></div>
+
+      <div class="catatan-box" style="margin-top:16px">
+        <label>📋 Status Laporan Administrasi</label>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+          <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px;font-weight:600;color:var(--dark);">
+            <input type="checkbox" id="chk-absensi" onchange="autoSave()"> ✅ Absensi kehadiran sudah diisi
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px;font-weight:600;color:var(--dark);">
+            <input type="checkbox" id="chk-perkembangan" onchange="autoSave()"> ✅ Catatan perkembangan siswa sudah diisi
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px;font-weight:600;color:var(--dark);">
+            <input type="checkbox" id="chk-dokumentasi" onchange="autoSave()"> ✅ Dokumentasi foto/video sudah dikirim
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px;font-weight:600;color:var(--dark);">
+            <input type="checkbox" id="chk-spp" onchange="autoSave()"> ✅ Status SPP siswa sudah dikonfirmasi ke akademik
+          </label>
+        </div>
+      </div>
+
+      <div class="btn-group no-print">
+        <button class="btn btn-primary" onclick="generateRekap()">🔄 Generate Rekap</button>
+        <button class="btn btn-gold" onclick="printRekap()">🖨️ Cetak Rekap</button>
+        <button class="btn btn-outline" onclick="exportAll()">📁 Export Semua Data</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JUKNIS RINGKAS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📖</div>
+      <div><h2>Ringkasan Juknis Madani</h2></div>
+    </div>
+    <div class="card-body" style="font-size:13px;line-height:1.8;">
+      <p class="section-title">Status Kehadiran (TIDAK Diganti)</p>
+      <ul style="padding-left:18px;color:var(--gray);">
+        <li>Siswa tidak hadir tanpa keterangan (tidak konfirmasi via chat/telp)</li>
+        <li>Tidak hadir karena liburan atau alasan tidak darurat</li>
+        <li>Siswa tidak berada di rumah tanpa konfirmasi</li>
+        <li>Sudah ditunggu tentor 30 menit tanpa kabar</li>
+      </ul>
+      <p class="section-title">Status Kehadiran (PERLU Diganti)</p>
+      <ul style="padding-left:18px;color:var(--gray);">
+        <li>Musibah duka di rumah sendiri</li>
+        <li>Kegiatan sekolah (ekskul, lomba, pesantren kilat) — maks 4 kali</li>
+        <li>Sakit — maks 10 hari</li>
+        <li>Situasi darurat (kecelakaan, renovasi rumah, dll)</li>
+      </ul>
+      <p class="section-title">Alur Pelaporan & Penggajian</p>
+      <ul style="padding-left:18px;color:var(--gray);">
+        <li>Kirim bukti absensi + dokumentasi (foto/video) ke akademik</li>
+        <li>Honor diberikan setelah laporan dikonfirmasi, maks 4 hari</li>
+        <li>Honor ditransfer via BRI / GoPay ke rekening akademik</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<div class="notif" id="notif">✓ Data tersimpan otomatis</div>
+
+<script>
+// ============ ASPEK PERKEMBANGAN ============
+const aspekList = [
+  "Pemahaman Materi",
+  "Kemampuan Membaca",
+  "Kemampuan Menulis",
+  "Berhitung / Logika",
+  "Semangat & Motivasi",
+  "Kehadiran & Disiplin",
+  "Komunikasi dengan Tentor",
+  "Penerapan Materi",
+];
+
+function buildPerkembanganTable() {
+  const tbody = document.getElementById('pkb-tbody');
+  tbody.innerHTML = '';
+  const data = getStoredData().perkembangan || {};
+  aspekList.forEach((aspek, i) => {
+    const tr = document.createElement('tr');
+    const savedRating = data['rating_' + i] || '';
+    const savedCatatan = data['catatan_aspek_' + i] || '';
+    tr.innerHTML = `
+      <td><strong>${aspek}</strong></td>
+      <td>
+        <select class="rating-select" id="pkb-rating-${i}" onchange="autoSave()">
+          <option value="">-- Nilai --</option>
+          <option value="A" ${savedRating==='A'?'selected':''} style="color:#0d5c30;background:#d4f5e3">⭐⭐⭐ A - Sangat Baik</option>
+          <option value="B" ${savedRating==='B'?'selected':''} style="color:#1e40af;background:#dbeafe">⭐⭐ B - Baik</option>
+          <option value="C" ${savedRating==='C'?'selected':''} style="color:#78450a;background:#fef3c7">⭐ C - Cukup</option>
+          <option value="D" ${savedRating==='D'?'selected':''} style="color:#8b1a1a;background:#fde8e8">D - Perlu Perhatian</option>
+        </select>
+      </td>
+      <td><input type="text" id="pkb-catatan-aspek-${i}" value="${savedCatatan}" placeholder="Catatan singkat..." oninput="autoSave()" style="font-size:12px;padding:6px 10px;"></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ============ ABSENSI GRID ============
+function buildAbsensiGrid() {
+  const n = parseInt(document.getElementById('abs-jumlah').value);
+  const grid = document.getElementById('absensi-grid');
+  const data = getStoredData().absensi || {};
+  grid.innerHTML = '';
+  for (let i = 1; i <= n; i++) {
+    const savedStatus = data['status_' + i] || 'H';
+    const savedDate = data['date_' + i] || '';
+    const div = document.createElement('div');
+    div.className = 'absensi-item';
+    div.innerHTML = `
+      <div class="pertemuan-num">PERTEMUAN ${i}</div>
+      <input type="date" id="abs-date-${i}" value="${savedDate}" oninput="updateStats();autoSave()">
+      <select class="status-select status-${savedStatus}" id="abs-status-${i}" onchange="updateStatusColor(this);updateStats();autoSave()">
+        <option value="H" ${savedStatus==='H'?'selected':''}>H — Hadir</option>
+        <option value="A" ${savedStatus==='A'?'selected':''}>A — Tdk Hadir</option>
+        <option value="S" ${savedStatus==='S'?'selected':''}>S — Sakit</option>
+        <option value="I" ${savedStatus==='I'?'selected':''}>I — Izin</option>
+        <option value="L" ${savedStatus==='L'?'selected':''}>L — Lainnya</option>
+      </select>
+    `;
+    grid.appendChild(div);
+  }
+  updateStats();
+}
+
+function updateStatusColor(sel) {
+  sel.className = 'status-select status-' + sel.value;
+}
+
+function updateStats() {
+  const n = parseInt(document.getElementById('abs-jumlah').value);
+  let counts = {H:0, A:0, S:0, I:0, L:0};
+  for (let i = 1; i <= n; i++) {
+    const el = document.getElementById('abs-status-' + i);
+    if (el) counts[el.value] = (counts[el.value] || 0) + 1;
+  }
+  document.getElementById('stat-H').textContent = counts.H;
+  document.getElementById('stat-A').textContent = counts.A;
+  document.getElementById('stat-S').textContent = counts.S;
+  document.getElementById('stat-I').textContent = counts.I;
+}
+
+// ============ TABS ============
+function showTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (tab === 'rekap') generateRekap();
+}
+
+// ============ STORAGE ============
+function getStoredData() {
+  try {
+    return JSON.parse(localStorage.getItem('madani_admin') || '{}');
+  } catch(e) { return {}; }
+}
+
+let saveTimer;
+function autoSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveData, 800);
+}
+
+function saveData() {
+  const n = parseInt(document.getElementById('abs-jumlah').value);
+  const absensiData = {};
+  for (let i = 1; i <= n; i++) {
+    const st = document.getElementById('abs-status-' + i);
+    const dt = document.getElementById('abs-date-' + i);
+    if (st) absensiData['status_' + i] = st.value;
+    if (dt) absensiData['date_' + i] = dt.value;
+  }
+
+  const perkembanganData = {};
+  aspekList.forEach((_, i) => {
+    const r = document.getElementById('pkb-rating-' + i);
+    const c = document.getElementById('pkb-catatan-aspek-' + i);
+    if (r) perkembanganData['rating_' + i] = r.value;
+    if (c) perkembanganData['catatan_aspek_' + i] = c.value;
+  });
+
+  const data = {
+    absensi: absensiData,
+    perkembangan: perkembanganData,
+    abs_tentor: val('abs-tentor'),
+    abs_siswa: val('abs-siswa'),
+    abs_lokasi: val('abs-lokasi'),
+    abs_kursus: val('abs-kursus'),
+    abs_bulan: val('abs-bulan'),
+    abs_tahun: val('abs-tahun'),
+    abs_jumlah: val('abs-jumlah'),
+    abs_catatan: val('abs-catatan'),
+    pkb_siswa: val('pkb-siswa'),
+    pkb_kursus: val('pkb-kursus'),
+    pkb_periode: val('pkb-periode'),
+    pkb_gaya: val('pkb-gaya'),
+    pkb_prestasi: val('pkb-prestasi'),
+    pkb_target: val('pkb-target'),
+    pkb_kendala: val('pkb-kendala'),
+    pkb_rekomendasi: val('pkb-rekomendasi'),
+    dok_tentor: val('dok-tentor'),
+    dok_siswa: val('dok-siswa'),
+    dok_tanggal: val('dok-tanggal'),
+    dok_pertemuan: val('dok-pertemuan'),
+    dok_opening: val('dok-opening'),
+    dok_materi: val('dok-materi'),
+    dok_closing: val('dok-closing'),
+    dok_respon: val('dok-respon'),
+    dok_foto: val('dok-foto'),
+    dok_catatan: val('dok-catatan'),
+    chk_absensi: document.getElementById('chk-absensi')?.checked,
+    chk_perkembangan: document.getElementById('chk-perkembangan')?.checked,
+    chk_dokumentasi: document.getElementById('chk-dokumentasi')?.checked,
+    chk_spp: document.getElementById('chk-spp')?.checked,
+  };
+  localStorage.setItem('madani_admin', JSON.stringify(data));
+  showNotif('✓ Data tersimpan otomatis');
+}
+
+function val(id) {
+  const el = document.getElementById(id);
+  return el ? el.value : '';
+}
+
+function loadData() {
+  const data = getStoredData();
+  const fields = [
+    'abs-tentor','abs-siswa','abs-lokasi','abs-kursus','abs-bulan','abs-tahun','abs-jumlah','abs-catatan',
+    'pkb-siswa','pkb-kursus','pkb-periode','pkb-gaya','pkb-prestasi','pkb-target','pkb-kendala','pkb-rekomendasi',
+    'dok-tentor','dok-siswa','dok-tanggal','dok-pertemuan','dok-opening','dok-materi','dok-closing','dok-respon','dok-foto','dok-catatan'
+  ];
+  fields.forEach(f => {
+    const el = document.getElementById(f);
+    const key = f.replace(/-/g,'_');
+    if (el && data[key] !== undefined) el.value = data[key];
+  });
+  const chks = ['absensi','perkembangan','dokumentasi','spp'];
+  chks.forEach(c => {
+    const el = document.getElementById('chk-' + c);
+    if (el && data['chk_' + c] !== undefined) el.checked = data['chk_' + c];
+  });
+}
+
+// ============ REKAP ============
+function generateRekap() {
+  const n = parseInt(document.getElementById('abs-jumlah').value);
+  let H = 0, A = 0, S = 0, I = 0;
+  for (let i = 1; i <= n; i++) {
+    const el = document.getElementById('abs-status-' + i);
+    if (el) {
+      if (el.value === 'H') H++;
+      else if (el.value === 'A') A++;
+      else if (el.value === 'S') S++;
+      else if (el.value === 'I') I++;
+    }
+  }
+  const tentor = val('abs-tentor') || '___________';
+  const siswa = val('abs-siswa') || '___________';
+  const lokasi = val('abs-lokasi') || '___________';
+  const kursus = val('abs-kursus') || '___________';
+  const bulan = val('abs-bulan') || '___________';
+  const tahun = val('abs-tahun') || '____';
+
+  const preview = document.getElementById('rekap-preview');
+  preview.innerHTML = `
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:18px;color:var(--green)">MADANI BIMBINGAN BELAJAR</div>
+      <div style="font-size:12px;color:var(--gray);margin-top:2px">REKAP ADMINISTRASI TENTOR — ${bulan.toUpperCase()} ${tahun}</div>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+      <tr><td style="padding:4px 0;width:40%;color:var(--gray)">Nama Tentor</td><td style="padding:4px 0;font-weight:700">: ${tentor}</td></tr>
+      <tr><td style="padding:4px 0;color:var(--gray)">Nama Siswa</td><td style="padding:4px 0;font-weight:700">: ${siswa}</td></tr>
+      <tr><td style="padding:4px 0;color:var(--gray)">Lokasi</td><td style="padding:4px 0;font-weight:700">: ${lokasi}</td></tr>
+      <tr><td style="padding:4px 0;color:var(--gray)">Kursus</td><td style="padding:4px 0;font-weight:700">: ${kursus}</td></tr>
+      <tr><td style="padding:4px 0;color:var(--gray)">Periode</td><td style="padding:4px 0;font-weight:700">: ${bulan} ${tahun}</td></tr>
+    </table>
+    <hr style="margin:12px 0;border:none;border-top:1.5px solid var(--border)">
+    <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;color:var(--green);margin-bottom:8px;text-transform:uppercase;">Rekap Kehadiran</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+      <tr style="background:var(--green-pale)">
+        <td style="padding:8px 12px;font-weight:700;color:var(--green-light)">✅ Hadir</td>
+        <td style="padding:8px 12px;font-weight:900;font-size:18px;color:var(--green-light)">${H}</td>
+        <td style="padding:8px 12px;font-size:11px;color:var(--gray)">pertemuan</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 12px;font-weight:700;color:var(--red)">❌ Tidak Hadir</td>
+        <td style="padding:8px 12px;font-weight:900;font-size:18px;color:var(--red)">${A}</td>
+        <td style="padding:8px 12px;font-size:11px;color:var(--gray)">pertemuan (tidak diganti)</td>
+      </tr>
+      <tr style="background:var(--green-pale)">
+        <td style="padding:8px 12px;font-weight:700;color:var(--gold)">🤒 Sakit</td>
+        <td style="padding:8px 12px;font-weight:900;font-size:18px;color:var(--gold)">${S}</td>
+        <td style="padding:8px 12px;font-size:11px;color:var(--gray)">pertemuan (perlu diganti)</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 12px;font-weight:700;color:var(--blue)">📋 Izin/Sekolah</td>
+        <td style="padding:8px 12px;font-weight:900;font-size:18px;color:var(--blue)">${I}</td>
+        <td style="padding:8px 12px;font-size:11px;color:var(--gray)">pertemuan (perlu diganti)</td>
+      </tr>
+    </table>
+    <hr style="margin:12px 0;border:none;border-top:1.5px solid var(--border)">
+    <div style="font-size:13px;color:var(--gray)">
+      <strong style="color:var(--dark)">Total Pertemuan Terlaksana:</strong> ${H} dari ${n} pertemuan<br>
+      <strong style="color:var(--dark)">Tanggal Laporan:</strong> ${new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'})}
+    </div>
+    <div style="margin-top:12px;padding:10px 14px;background:${H>=n*0.8?'var(--green-pale)':'var(--gold-light)'};border-radius:8px;font-size:13px;font-weight:700;color:${H>=n*0.8?'var(--green)':'#7a5a00'}">
+      ${H>=n*0.8?'✅ Kehadiran BAIK — memenuhi syarat pelaporan honor':'⚠️ Kehadiran perlu dievaluasi'}
+    </div>
+  `;
+}
+
+// ============ PRINT ============
+function printAbsensi() {
+  saveData();
+  window.print();
+}
+
+function printPerkembangan() {
+  saveData();
+  window.print();
+}
+
+function printDokumentasi() {
+  saveData();
+  window.print();
+}
+
+function printRekap() {
+  generateRekap();
+  saveData();
+  window.print();
+}
+
+// ============ EXPORT ============
+function exportAll() {
+  const data = getStoredData();
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `madani_admin_${val('abs-siswa') || 'data'}_${val('abs-bulan') || ''}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showNotif('✓ Data berhasil diekspor');
+}
+
+// ============ RESET ============
+function resetAbsensi() {
+  if (!confirm('Reset semua data absensi?')) return;
+  ['abs-tentor','abs-siswa','abs-lokasi','abs-catatan'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  buildAbsensiGrid();
+  showNotif('🔄 Form absensi direset');
+}
+
+function resetPerkembangan() {
+  if (!confirm('Reset data perkembangan?')) return;
+  ['pkb-siswa','pkb-periode','pkb-prestasi','pkb-target','pkb-kendala','pkb-rekomendasi'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  buildPerkembanganTable();
+  showNotif('🔄 Form perkembangan direset');
+}
+
+function resetDokumentasi() {
+  if (!confirm('Reset data dokumentasi?')) return;
+  ['dok-tentor','dok-siswa','dok-tanggal','dok-pertemuan','dok-opening','dok-materi','dok-closing','dok-respon','dok-foto','dok-catatan'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  showNotif('🔄 Form dokumentasi direset');
+}
+
+// ============ NOTIF ============
+function showNotif(msg) {
+  const notif = document.getElementById('notif');
+  notif.textContent = msg;
+  notif.classList.add('show');
+  setTimeout(() => notif.classList.remove('show'), 2500);
+}
+
+// ============ INIT ============
+window.onload = function() {
+  buildAbsensiGrid();
+  buildPerkembanganTable();
+  loadData();
+  buildAbsensiGrid(); // rebuild with loaded data
+  buildPerkembanganTable();
+
+  // Set tahun otomatis
+  const tEl = document.getElementById('abs-tahun');
+  if (tEl && !tEl.value) tEl.value = new Date().getFullYear();
+
+  // Set bulan otomatis
+  const bEl = document.getElementById('abs-bulan');
+  if (bEl && !bEl.value) {
+    const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+    bEl.value = months[new Date().getMonth()];
+  }
+};
+</script>
+</body>
+</html>
